@@ -9,6 +9,26 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public abstract class GameObject {
+    
+    String id; // Unique identifier for the object
+    String name; // Name of the object
+    String description; // Description of the object
+    boolean hidden; // Whether the object is initially hidden
+
+    // Constructor to initialize a game object
+    public GameObject(String id, String name, String description, boolean hidden) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.hidden = hidden;
+    }
+ 
+    // Getters and setters for attributes
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public boolean isHidden() { return hidden; }
+    public void setHidden(boolean hidden) { this.hidden = hidden; }
    
     /**
      * Returns a string representation of the game object, including its ID, name,

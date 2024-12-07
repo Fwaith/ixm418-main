@@ -8,8 +8,18 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public class Exit extends GameObject {
+    private Room nextRoom; // The room this exit leads to
 
-   
+    // Constructor to initialize the exit
+    public Exit(String id, String description, boolean hidden, Room nextRoom) {
+        super(id, "Exit", description, hidden);
+        this.nextRoom = nextRoom;
+    }
+
+    // Returns the room this exit leads to
+    public Room getNextRoom() {
+        return nextRoom;
+    }
 
     /**
      * Returns a string representation of the exit, including attributes inherited from {@code GameObject}

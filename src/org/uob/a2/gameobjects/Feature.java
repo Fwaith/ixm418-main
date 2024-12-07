@@ -9,15 +9,20 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public class Feature extends GameObject {
-
      /**
      * Returns a string representation of the feature by calling the superclass {@code GameObject}'s
      * {@code toString} method.
      *
      * @return a string describing the feature
      */
+
+    public Feature(String id, String name, String description, boolean hidden) {
+        super(id, name, description, hidden);
+    }
+    
     @Override
     public String toString() {
         return super.toString();
     }
+
 }

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MapTest {
 
     /**
-     * Tests the addition of rooms to the map.
+     * Tests the addition of rooms to the map. 
      */
     @Test
     void testAddRoom() {
