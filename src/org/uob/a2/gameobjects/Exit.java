@@ -8,16 +8,15 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public class Exit extends GameObject {
-    private Room nextRoom; // The room this exit leads to
+    
+    String nextRoom;
 
-    // Constructor to initialize the exit
-    public Exit(String id, String description, boolean hidden, Room nextRoom) {
-        super(id, "Exit", description, hidden);
+    public Exit(String id, String name, String description, String nextRoom, boolean hidden) {
+        super(id, name, description, hidden);
         this.nextRoom = nextRoom;
     }
 
-    // Returns the room this exit leads to
-    public Room getNextRoom() {
+    public String getNextRoom() {
         return nextRoom;
     }
 
@@ -31,4 +30,5 @@ public class Exit extends GameObject {
     public String toString() {
         return super.toString() + ", nextRoom=" + nextRoom;
     }
+
 }

@@ -11,9 +11,9 @@ package org.uob.a2.gameobjects;
 public abstract class GameObject {
     
     String id; // Unique identifier for the object
-    String name; // Name of the object
-    String description; // Description of the object
-    boolean hidden; // Whether the object is initially hidden
+    protected String name; // Name of the object
+    protected String description; // Description of the object
+    protected boolean hidden; // Whether the object is initially hidden
 
     // Constructor to initialize a game object
     public GameObject(String id, String name, String description, boolean hidden) {
@@ -22,13 +22,39 @@ public abstract class GameObject {
         this.description = description;
         this.hidden = hidden;
     }
+
+    // Default constructor
+    public GameObject() {
+        this.id = "default_id";
+        this.name = "Default Name";
+        this.description = "Default Description";
+        this.hidden = false; // Default visibility is not hidden
+    }
  
-    // Getters and setters for attributes
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public boolean isHidden() { return hidden; }
-    public void setHidden(boolean hidden) { this.hidden = hidden; }
+    // Getters for attributes 
+    public String getId() { 
+        return id;
+    }
+    public String getName() { 
+        return name; 
+    }
+    public String getDescription() { 
+        return description; 
+    }
+    public boolean isHidden() { 
+        return hidden; 
+    }
+
+    // Setters for attributes
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setHidden(boolean hidden) { 
+        this.hidden = hidden;
+    }
    
     /**
      * Returns a string representation of the game object, including its ID, name,
@@ -45,4 +71,5 @@ public abstract class GameObject {
                ", hidden=" + hidden +
                '}';
     }
+    
 }

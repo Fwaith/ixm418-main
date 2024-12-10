@@ -16,34 +16,49 @@ import org.uob.a2.utils.*;
  * </p>
  */
 public class Map {
-    private List<Room> rooms = new ArrayList<>(); // List of all rooms in the map
-    private Room currentRoom; // The room the player is currently in
 
-    /**
-     * Adds a room to the map.
-     * @param room The room to add.
-     */
-    public void addRoom(Room room) {
-        rooms.add(room);
-        if (currentRoom == null) currentRoom = room; // Set the first room added as the default current room
+    ArrayList<Room> rooms;         // Stores rooms in a list for iteration
+    HashMap<String, Room> roomMap; // Maps room IDs to Room objects for quick lookup
+    Room currentRoom;              // The room the player is currently in
+
+    public Map() {
+        this.rooms = new ArrayList<>();
+        this.roomMap = new HashMap<>();
+        this.currentRoom = null;
     }
-
-    /**
-     * Gets the current room the player is in.
-     * @return The current room.
-     */
+    //Constructs a new, empty Map.
+    
     public Room getCurrentRoom() {
         return currentRoom;
     }
-
-    /**
-     * Sets the current room the player is in.
-     * @param room The room to set as current.
-     */
-    public void setCurrentRoom(Room room) {
-        currentRoom = room;
-    }
+    //Retrieves the current room the player is in.
+    //Returns: the current room
     
+    public void addRoom(Room room) {
+        // Add the room to the list and map
+        rooms.add(room);
+        roomMap.put(room.getId(), room);
+
+        // Set the first room added as the current room if no current room is set
+        if (currentRoom == null) {
+            currentRoom = room;
+        }
+    }
+    //Adds a room to the map.
+    //Parameters: room - the room to add to the map
+    
+    public void setCurrentRoom(String roomId) {
+        // Retrieve the room from the map and set it as the current room
+        if (roomMap.containsKey(roomId)) {
+            currentRoom = roomMap.get(roomId);
+        } 
+        else {
+            throw new IllegalArgumentException("Room ID not found in the map: " + roomId);
+        }
+    }
+    //Sets the current room based on the provided room ID.
+    //Parameters: roomId - the ID of the room to set as the current room
+
     /**
      * Returns a string representation of the map, including all rooms.
      *

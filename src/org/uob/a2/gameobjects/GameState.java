@@ -9,13 +9,34 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public class GameState {
-    private Map map; // The game's map
-    private Player player; // The player
 
+    Map map;        
+    Player player;
+    
     public GameState(Map map, Player player) {
         this.map = map;
         this.player = player;
     }
+    //Constructs a new GameState with the specified map and player.
+    //Parameters: map - the map representing the game world player - the player in the game
+    
+    public GameState() {
+        this.map = new Map();         // Initializes with an empty map
+        this.player = new Player();   // Initializes with a default player
+    }
+    //Default constructor for GameState.
+    
+    public Map getMap() {
+        return map;
+    }
+    //Retrieves the map associated with the current game state.
+    //Returns: the map representing the game world
+    
+    public Player getPlayer() {
+        return player;
+    }
+    //Retrieves the player associated with the current game state.
+    //Returns: the player in the game
     
     /**
      * Returns a string representation of the game state, including the map and player details.

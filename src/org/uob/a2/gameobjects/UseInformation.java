@@ -10,25 +10,50 @@ package org.uob.a2.gameobjects;
  * </p>
  */
 public class UseInformation {
-    private boolean isUsed; // Whether the object has been used
-    private String action; // The action performed by the object (e.g., "heal", "unlock")
-    private String target; // The target of the action (e.g., "door", "player")
-    private String result; // The result of the action (e.g., "door unlocked")
-    private String message; // A message describing the action to the player
+    boolean isUsed; // Whether the object has been used
+    String action; // The action performed by the object (e.g., "heal", "unlock")
+    String target; // The target of the action (e.g., "door", "player")
+    String result; // The result of the action (e.g., "door unlocked")
+    String message; // A message describing the action to the player
 
     // Constructor to initialize use information
-    public UseInformation(String action, String target, String result, String message) {
-        this.isUsed = false;
+    public UseInformation(boolean isUsed, String action, String target, String result, String message) {
+        this.isUsed = isUsed;
         this.action = action;
         this.target = target;
         this.result = result;
         this.message = message;
     }
 
-    // Getters and setters
-    public boolean isUsed() { return isUsed; }
-    public void setUsed(boolean used) { isUsed = used; }
-    public String getMessage() { return message; }
+    public void setUsed(boolean isUsed) { 
+        this.isUsed = isUsed;
+    }
+    public void setAction(String action) {
+        this.action = action;
+    }
+    public void setTarget(String target) {
+        this.target = target;
+    }
+    public void setResult(String result) {
+        this.result = result;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getAction() {
+        return action;
+    }
+    public String getTarget() {
+        return target;
+    }
+    public String getResult() {
+        return result;
+    }
+    public String getMessage() { 
+        return message; 
+    }
+
     /**
      * Returns a string representation of the usage information, including all attributes.
      *
@@ -44,4 +69,5 @@ public class UseInformation {
                 ", message='" + message + '\'' +
                 '}';
     }
+    
 }
