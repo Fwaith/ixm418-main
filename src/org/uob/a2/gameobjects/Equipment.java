@@ -29,12 +29,29 @@ public class Equipment extends GameObject implements Usable {
         }
 
         // Perform the action: reveal contents of the container
-        for (GameObject obj : container.open())  {
+        for (GameObject obj : container.open()) {
             obj.setHidden(false); // Reveal all hidden objects in the container
         }
 
         // Mark the equipment as used
         useInformation.setUsed(true);
+
+        // In addition to opening the container, the "result" might be an item in the room to reveal
+        // Locate the item specified by useInformation.getResult() in the current room and reveal it
+        Map map = gameState.getMap();
+        Room currentRoom = map.getCurrentRoom();
+        // Attempt to find the result item/equipment by ID in the room and reveal it
+        // Since we know result is "item1" or some item ID, we look for it in room's items
+        for (Item roomItem : currentRoom.getItems()) {
+            if (roomItem.getId().equals(useInformation.getResult())) {
+                roomItem.setHidden(false);
+            }
+        }
+        for (Equipment eq : currentRoom.getEquipments()) {
+            if (eq.getId().equals(useInformation.getResult())) {
+                eq.setHidden(false);
+            }
+        }
 
         // Return the result message from the use information
         return useInformation.getMessage();
@@ -50,4 +67,5 @@ public class Equipment extends GameObject implements Usable {
     public String toString() {
         return super.toString() + ", useInformation=" + useInformation;
     }
+
 }

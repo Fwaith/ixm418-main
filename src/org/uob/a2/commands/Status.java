@@ -44,6 +44,12 @@ public class Status extends Command {
             }
             return result.toString();
         } else if (value != null && !value.isEmpty()) {
+            // Special case: topic is "player"
+            if ("player".equalsIgnoreCase(value)) {
+                // Return full player status (which includes the string "Player")
+                return player.toString();
+            }
+
             // Check for specific item or equipment
             Item item = player.getItem(value);
             Equipment equipment = player.getEquipment(value);
@@ -53,7 +59,8 @@ public class Status extends Command {
             if (equipment != null) {
                 return equipment.getDescription();
             }
-            // For invalid specific topics, return an empty string (see next fix)
+
+            // Invalid specific topic: return an empty string
             return "";
         } else {
             // No topic means show full player status
