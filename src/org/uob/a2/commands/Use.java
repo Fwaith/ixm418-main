@@ -14,7 +14,7 @@ import org.uob.a2.gameobjects.*;
  */
 public class Use extends Command {
 
-    public String target;
+    private final String target;
 
     public Use(String equipmentName, String target) {
         this.commandType = CommandType.USE;
@@ -34,6 +34,7 @@ public class Use extends Command {
     //Overrides: toString in class Object
     //Returns: a string describing the use command
     
+    @Override
     public String execute(GameState gameState) {
         Player player = gameState.getPlayer();
         Equipment equipment = player.getEquipment(value);
@@ -42,16 +43,21 @@ public class Use extends Command {
             return "You do not have " + value;
         }
 
-        if (equipment.getUseInformation().isUsed()) {
+        UseInformation useInfo = equipment.getUseInformation();
+        if (useInfo.isUsed()) {
             return "You have already used " + value;
         }
 
+        // Retrieve the target object from the current room
         GameObject targetObject = gameState.getMap().getCurrentRoom().getFeatureByName(target);
 
-        if (targetObject instanceof Container && equipment.getUseInformation().getTarget().equals(targetObject.getId())) {
-            equipment.getUseInformation().setUsed(true);
-            return equipment.getUseInformation().getMessage();
+        if (targetObject instanceof Container container) {
+            if (useInfo.getTarget().equals(container.getId())) {
+                useInfo.setUsed(true);
+                return useInfo.getMessage();
+            }
         }
+
         return "Invalid use target";
     }
     //Executes the use command. Checks if the player has the specified equipment and whether the equipment can interact with the target. If valid, the equipment is used on the target.

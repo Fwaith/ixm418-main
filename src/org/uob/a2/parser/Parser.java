@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import org.uob.a2.commands.*;
+import org.uob.a2.gameobjects.*;
 
 /**
  * The {@code Parser} class processes a list of tokens and converts them into {@code Command} objects
@@ -16,8 +17,6 @@ import org.uob.a2.commands.*;
  */
 public class Parser {
 
-    //public Parser()
-    
     public Command parse(ArrayList<Token> tokens) throws CommandErrorException {
         if (tokens.isEmpty()) {
             throw new CommandErrorException("No tokens to parse.");
@@ -76,6 +75,7 @@ public class Parser {
             default -> throw new CommandErrorException("Invalid command.");
         }
     }
+
     //Parses a list of tokens into a Command object.
     //Parameters: tokens - the list of tokens to parse
     //Returns: a Command object representing the parsed command

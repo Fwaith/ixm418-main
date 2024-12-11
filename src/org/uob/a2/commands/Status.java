@@ -30,21 +30,36 @@ public class Status extends Command {
     //Overrides: toString in class Object
     //Returns: a string describing the status command
 
+    @Override
     public String execute(GameState gameState) {
         Player player = gameState.getPlayer();
 
         if ("inventory".equalsIgnoreCase(value)) {
-            return player.getInventory().toString();
-        } else if ("player".equalsIgnoreCase(value)) {
-            return player.toString();
-        } else {
-            GameObject item = player.getItem(value);
-            if (item == null) {
-                item = player.getEquipment(value);
+            StringBuilder result = new StringBuilder("Inventory:\n");
+            for (Item item : player.getInventory()) {
+                result.append("- ").append(item.getName()).append("\n");
             }
-            return item != null ? item.getDescription() : "";
+            for (Equipment equipment : player.getEquipment()) {
+                result.append("- ").append(equipment.getName()).append("\n");
+            }
+            return result.toString();
+        } else if (value != null) {
+            // Check for specific item or equipment
+            Item item = player.getItem(value);
+            Equipment equipment = player.getEquipment(value);
+            if (item != null) {
+                return item.getDescription();
+            }
+            if (equipment != null) {
+                return equipment.getDescription();
+            }
+            return "No information available for: " + value;
+        } else {
+            return "Player: " + player.getName();
         }
     }
+
+
     //Executes the status command. Retrieves and displays information based on the specified topic.
     //If the topic is "inventory", it lists all items in the player's inventory.
     //If the topic matches an item name, it displays the item's description.

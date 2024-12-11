@@ -34,12 +34,13 @@ public class Help extends Command {
 
     @Override
     public String toString() {
-        return "HELP Command: " + (value != null ? "help " + value : "general help");
+        return "HELP Command: " + (value != null ? "help " + value : "help null");
     }
     //Returns a string representation of the help command, including its type and topic.
     //Overrides: toString in class Object
     //Returns: a string describing the help command
 
+    @Override
     public String execute(GameState gameState) {
         if (value == null || value.isEmpty()) {
             return """
@@ -51,6 +52,7 @@ public class Help extends Command {
                 - LOOK: Examine your surroundings or specific objects.
                 - STATUS: View your inventory or player status.
                 - HELP: Get help on a specific topic or general help.
+                - QUIT: Exit the game.
                 """;
         }
 
