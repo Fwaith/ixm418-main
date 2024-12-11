@@ -41,6 +41,10 @@ public class UseInformation {
         this.message = message;
     }
 
+    public boolean isUsed() {
+        return isUsed;
+    }
+
     public String getAction() {
         return action;
     }

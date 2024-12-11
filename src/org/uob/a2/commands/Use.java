@@ -1,5 +1,7 @@
 package org.uob.a2.commands;
 
+import java.lang.reflect.Constructor;
+
 import org.uob.a2.gameobjects.*;
 
 /**
@@ -12,5 +14,49 @@ import org.uob.a2.gameobjects.*;
  */
 public class Use extends Command {
 
-  
+    public String target;
+
+    public Use(String equipmentName, String target) {
+        this.commandType = CommandType.USE;
+        this.value = equipmentName;
+        this.target = target;
+    }
+    //Creates a new Use command for the specified equipment and target.
+    //Parameters:
+    //equipmentName - the name of the equipment to use
+    //target - the name of the target on which the equipment will be used
+    
+    @Override
+    public String toString() {
+        return "Use command: use " + value + " on " + target;
+    }
+    //Returns a string representation of the use command, including its type, equipment, and target.
+    //Overrides: toString in class Object
+    //Returns: a string describing the use command
+    
+    public String execute(GameState gameState) {
+        Player player = gameState.getPlayer();
+        Equipment equipment = player.getEquipment(value);
+
+        if (equipment == null) {
+            return "You do not have " + value;
+        }
+
+        if (equipment.getUseInformation().isUsed()) {
+            return "You have already used " + value;
+        }
+
+        GameObject targetObject = gameState.getMap().getCurrentRoom().getFeatureByName(target);
+
+        if (targetObject instanceof Container && equipment.getUseInformation().getTarget().equals(targetObject.getId())) {
+            equipment.getUseInformation().setUsed(true);
+            return equipment.getUseInformation().getMessage();
+        }
+        return "Invalid use target";
+    }
+    //Executes the use command. Checks if the player has the specified equipment and whether the equipment can interact with the target. If valid, the equipment is used on the target.
+    //Specified by: execute in class Command
+    //Parameters: gameState - the current state of the game
+    //Returns: a string describing the result of the command execution
+    
 }

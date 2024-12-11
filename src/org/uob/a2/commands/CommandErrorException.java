@@ -1,5 +1,7 @@
 package org.uob.a2.commands;
 
+import java.lang.reflect.Constructor;
+
 /**
  * Represents an exception thrown when an unrecognized or invalid command is encountered.
  * 
@@ -9,6 +11,11 @@ package org.uob.a2.commands;
  */
 public class CommandErrorException extends Exception {
 
+    public CommandErrorException(String error) {
+        super(error);
+    }
+    //Constructs a new CommandErrorException with the specified error message.
+    //Parameters: error - the error message describing the command issue
 
     /**
      * Returns a string representation of the exception, including its message.
