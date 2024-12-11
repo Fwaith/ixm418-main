@@ -21,11 +21,14 @@ public class GameStateFileParser {
 
         Player player = null;
         Map map = new Map();
-        Room currentRoom = null;
         HashMap<String, Room> roomMap = new HashMap<>();
+        String initialRoomId = null;
+        Room currentRoom = null; // Track the currently defined room to add objects to
 
         String line;
         while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (line.isEmpty()) continue;
             String[] parts = line.split(":");
             if (parts.length < 2) continue;
 
@@ -34,12 +37,7 @@ public class GameStateFileParser {
 
             switch (key) {
                 case "player" -> player = new Player(value);
-
-                case "map" -> {
-                    // Set the map's current room, deferred until rooms are processed
-                    map.setCurrentRoom(value);
-                }
-
+                case "map" -> initialRoomId = value;
                 case "room" -> {
                     String[] roomParts = value.split(",", 4);
                     String roomId = roomParts[0].trim();
@@ -48,75 +46,70 @@ public class GameStateFileParser {
                     boolean roomHidden = Boolean.parseBoolean(roomParts[3].trim());
                     Room room = new Room(roomId, roomName, roomDescription, roomHidden);
                     roomMap.put(roomId, room);
+                    currentRoom = room; // Set current room reference
                 }
-
                 case "item" -> {
-                    String[] itemParts = value.split(",", 4);
-                    String itemId = itemParts[0].trim();
-                    String itemName = itemParts[1].trim();
-                    String itemDescription = itemParts[2].trim();
-                    boolean itemHidden = Boolean.parseBoolean(itemParts[3].trim());
-                    Item item = new Item(itemId, itemName, itemDescription, itemHidden);
                     if (currentRoom != null) {
+                        String[] itemParts = value.split(",", 4);
+                        Item item = new Item(itemParts[0].trim(), itemParts[1].trim(), itemParts[2].trim(),
+                                Boolean.parseBoolean(itemParts[3].trim()));
                         currentRoom.addItem(item);
                     }
                 }
-
                 case "equipment" -> {
-                    String[] equipParts = value.split(",", 8);
-                    String equipId = equipParts[0].trim();
-                    String equipName = equipParts[1].trim();
-                    String equipDescription = equipParts[2].trim();
-                    boolean equipHidden = Boolean.parseBoolean(equipParts[3].trim());
-                    String action = equipParts[4].trim();
-                    String target = equipParts[5].trim();
-                    String result = equipParts[6].trim();
-                    String message = equipParts[7].trim();
-                    UseInformation useInfo = new UseInformation(false, action, target, result, message);
-                    Equipment equipment = new Equipment(equipId, equipName, equipDescription, equipHidden, useInfo);
                     if (currentRoom != null) {
+                        String[] equipParts = value.split(",", 8);
+                        String equipId = equipParts[0].trim();
+                        String equipName = equipParts[1].trim();
+                        String equipDescription = equipParts[2].trim();
+                        boolean equipHidden = Boolean.parseBoolean(equipParts[3].trim());
+                        String action = equipParts[4].trim();
+                        String target = equipParts[5].trim();
+                        String result = equipParts[6].trim();
+                        String message = equipParts[7].trim();
+                        UseInformation useInfo = new UseInformation(false, action, target, result, message);
+                        Equipment equipment = new Equipment(equipId, equipName, equipDescription, equipHidden, useInfo);
                         currentRoom.addEquipment(equipment);
                     }
                 }
-
                 case "container" -> {
-                    String[] containerParts = value.split(",", 4);
-                    String containerId = containerParts[0].trim();
-                    String containerName = containerParts[1].trim();
-                    String containerDescription = containerParts[2].trim();
-                    boolean containerHidden = Boolean.parseBoolean(containerParts[3].trim());
-                    Container container = new Container(containerId, containerName, containerDescription, containerHidden);
                     if (currentRoom != null) {
+                        String[] containerParts = value.split(",", 4);
+                        String containerId = containerParts[0].trim();
+                        String containerName = containerParts[1].trim();
+                        String containerDescription = containerParts[2].trim();
+                        boolean containerHidden = Boolean.parseBoolean(containerParts[3].trim());
+                        Container container = new Container(containerId, containerName, containerDescription, containerHidden);
                         currentRoom.addFeature(container);
                     }
                 }
-
                 case "exit" -> {
-                    String[] exitParts = value.split(",", 5);
-                    String exitId = exitParts[0].trim();
-                    String exitName = exitParts[1].trim();
-                    String exitDescription = exitParts[2].trim();
-                    String nextRoom = exitParts[3].trim();
-                    boolean exitHidden = Boolean.parseBoolean(exitParts[4].trim());
-                    Exit exit = new Exit(exitId, exitName, exitDescription, nextRoom, exitHidden);
                     if (currentRoom != null) {
+                        String[] exitParts = value.split(",", 5);
+                        String exitId = exitParts[0].trim();
+                        String exitName = exitParts[1].trim();
+                        String exitDescription = exitParts[2].trim();
+                        String nextRoomId = exitParts[3].trim();
+                        boolean exitHidden = Boolean.parseBoolean(exitParts[4].trim());
+                        Exit exit = new Exit(exitId, exitName, exitDescription, nextRoomId, exitHidden);
                         currentRoom.addExit(exit);
                     }
                 }
             }
         }
 
-        // Add all rooms to the map
-        for (Room room : roomMap.values()) {
-            map.addRoom(room);
-        }
-
-        // Set the current room
-        if (map.getCurrentRoom() == null && !roomMap.isEmpty()) {
-            map.setCurrentRoom(roomMap.keySet().iterator().next());
-        }
-
         reader.close();
+
+        // Add all rooms to the map
+        for (Room r : roomMap.values()) {
+            map.addRoom(r);
+        }
+
+        // Now set the initial current room if available
+        if (initialRoomId != null && roomMap.containsKey(initialRoomId)) {
+            map.setCurrentRoom(initialRoomId);
+        }
+
         return new GameState(map, player);
     }
    

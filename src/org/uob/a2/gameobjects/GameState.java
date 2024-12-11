@@ -21,8 +21,8 @@ public class GameState {
     //Parameters: map - the map representing the game world player - the player in the game
     
     public GameState() {
-        this.map = new Map();         // Initializes with an empty map
-        this.player = new Player();   // Initializes with a default player
+        this.map = null;        
+        this.player = null;
     }
     //Default constructor for GameState.
     

@@ -48,12 +48,16 @@ public class Use extends Command {
             return "You have already used " + value;
         }
 
-        // Retrieve the target object from the current room
+        // Retrieve the target object by feature name
         GameObject targetObject = gameState.getMap().getCurrentRoom().getFeatureByName(target);
 
         if (targetObject instanceof Container container) {
             if (useInfo.getTarget().equals(container.getId())) {
                 useInfo.setUsed(true);
+                // Reveal all items inside the container
+                for (GameObject obj : container.open()) {
+                    obj.setHidden(false);
+                }
                 return useInfo.getMessage();
             }
         }
