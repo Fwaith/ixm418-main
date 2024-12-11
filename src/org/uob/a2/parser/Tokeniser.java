@@ -44,9 +44,11 @@ public class Tokeniser {
                 case "status" -> tokens.add(new Token(TokenType.STATUS));
                 case "help" -> tokens.add(new Token(TokenType.HELP));
                 case "quit" -> tokens.add(new Token(TokenType.QUIT));
+                case "use" -> tokens.add(new Token(TokenType.USE)); // Added this line
                 case "on", "with", "using" -> tokens.add(new Token(TokenType.PREPOSITION, word));
                 default -> tokens.add(new Token(TokenType.VAR, word));
             }
+            
         }
         tokens.add(new Token(TokenType.EOL)); // End of line token
     }

@@ -47,7 +47,7 @@ public class Container extends Feature {
                 "id='" + getId() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", hidden=" + isHidden() +
+                ", hidden=" + getHidden() +
                 '}';
     
     }

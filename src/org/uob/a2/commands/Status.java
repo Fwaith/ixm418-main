@@ -43,7 +43,7 @@ public class Status extends Command {
                 result.append("- ").append(equipment.getName()).append("\n");
             }
             return result.toString();
-        } else if (value != null) {
+        } else if (value != null && !value.isEmpty()) {
             // Check for specific item or equipment
             Item item = player.getItem(value);
             Equipment equipment = player.getEquipment(value);
@@ -53,12 +53,13 @@ public class Status extends Command {
             if (equipment != null) {
                 return equipment.getDescription();
             }
-            return "No information available for: " + value;
+            // For invalid specific topics, return an empty string (see next fix)
+            return "";
         } else {
-            return "Player: " + player.getName();
+            // No topic means show full player status
+            return player.toString();
         }
     }
-
 
     //Executes the status command. Retrieves and displays information based on the specified topic.
     //If the topic is "inventory", it lists all items in the player's inventory.

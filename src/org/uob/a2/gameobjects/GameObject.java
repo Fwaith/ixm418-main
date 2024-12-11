@@ -41,7 +41,7 @@ public abstract class GameObject {
     public String getDescription() { 
         return description; 
     }
-    public boolean isHidden() { 
+    public boolean getHidden() { 
         return hidden; 
     }
 

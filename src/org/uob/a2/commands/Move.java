@@ -33,7 +33,7 @@ public class Move extends Command {
         Room currentRoom = gameState.getMap().getCurrentRoom();
         Exit exit = currentRoom.getExit(value);
 
-        if (exit != null && !exit.isHidden()) {
+        if (exit != null && !exit.getHidden()) {
             gameState.getMap().setCurrentRoom(exit.getNextRoom());
             return "Moving towards " + value + "\n";
         }
