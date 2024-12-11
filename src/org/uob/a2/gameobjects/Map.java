@@ -51,10 +51,9 @@ public class Map {
         Room room = roomMap.get(roomId);
         if (room != null) {
             currentRoom = room;
-        } else {
-            // Do not throw an exception, just ignore
-            // If test expects currentRoom to become null, uncomment below:
-            // currentRoom = null;
+        } 
+        else {
+            currentRoom = null;
         }
     }
     //Sets the current room based on the provided room ID.

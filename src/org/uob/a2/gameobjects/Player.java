@@ -107,7 +107,7 @@ public class Player {
      */
     @Override
     public String toString() {
-        StringBuilder out = new StringBuilder("Player: " + this.name + "\nInventory:\n");
+        StringBuilder out = new StringBuilder("Player Name: " + this.name + "\nInventory:\n");
         for (Item i : this.inventory) {
             out.append("- ").append(i.getDescription()).append("\n");
         }
@@ -117,4 +117,5 @@ public class Player {
         }
         return out.toString();
     }
+
 }
