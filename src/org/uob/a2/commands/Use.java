@@ -6,6 +6,11 @@ import org.uob.a2.gameobjects.*;
 
 /**
  * Represents the use command, allowing the player to use equipment on a specific target in the game.
+ * 
+ * <p>
+ * The use command checks if the player has the specified equipment and whether it can interact with
+ * the target. The target can be a feature, item, or the current room, depending on the game context.
+ * </p>
  */
 public class Use extends Command {
 
@@ -28,51 +33,67 @@ public class Use extends Command {
         Equipment equipment = player.getEquipment(value);
 
         if (equipment == null) {
-            return "You do not have " + value;
+            return "You do not have " + value + ".";
         }
 
         UseInformation useInfo = equipment.getUseInformation();
-
-        // Check if the equipment has already been used
         if (useInfo.isUsed()) {
-            return "You have already used " + value;
+            return "You have already used " + value + ".";
         }
 
         Room currentRoom = gameState.getMap().getCurrentRoom();
 
-        // Handle specific cases for equipment use
-        if ("key".equalsIgnoreCase(value)) {
-            if ("box".equalsIgnoreCase(target)) {
-                return "You use the key to open the box. The box explodes and kills you. Game Over.";
-            }
-        } else if ("pickaxe".equalsIgnoreCase(value)) {
+        // Using a key to open the box
+        if (value.equalsIgnoreCase("key") && target.equalsIgnoreCase("box")) {
+            return "You use the key to open the box. The box explodes and kills you. Game over.";
+        }
+
+        // Using a pickaxe to reveal a new path
+        if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
             Exit hiddenExit = currentRoom.getExit("e3");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
                 useInfo.setUsed(true);
-                return "You mine away at the wall revealing a new path!";
+                return useInfo.getMessage();
             }
-        } else if ("tnt".equalsIgnoreCase(value)) {
+            return "There is nothing to mine here.";
+        }
+
+        // Using TNT to blow up a boulder
+        if (value.equalsIgnoreCase("tnt") && target.equalsIgnoreCase("boulder")) {
             Exit hiddenExit = currentRoom.getExit("e9");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
                 useInfo.setUsed(true);
-                return "You use the TNT. It blows up the boulder and reveals a new path!";
-            }
-        } else if ("pearl".equalsIgnoreCase(value)) {
-            return "You use the pearl and escape the dungeon. You win!";
-        }
-
-        // Handle container interaction
-        GameObject targetObject = currentRoom.getFeatureByName(target);
-        if (targetObject instanceof Container container) {
-            if (useInfo.getTarget().equals(container.getId())) {
-                useInfo.setUsed(true);
-                for (GameObject obj : container.open()) {
-                    obj.setHidden(false);
-                }
                 return useInfo.getMessage();
             }
+            return "There is nothing to blow up here.";
+        }
+
+        // Using a pearl to escape and win the game
+        if (value.equalsIgnoreCase("pearl") && target.equalsIgnoreCase("portal")) {
+            Exit hiddenExit = currentRoom.getExit("e18");
+            if (hiddenExit != null && hiddenExit.isHidden()) {
+                hiddenExit.setHidden(false);
+                useInfo.setUsed(true);
+                return useInfo.getMessage() + " You win!";
+            }
+            return "There is no portal here.";
+        }
+
+        // NEW: Using a pick to open the chest and reveal the iron
+        if (value.equalsIgnoreCase("pick") && target.equalsIgnoreCase("chest")) {
+            Container chest = (Container) currentRoom.getFeatureByName("chest");
+            if (chest != null && chest.isHidden()) {
+                chest.setHidden(false);
+                Item iron = currentRoom.getItemByName("iron");
+                if (iron != null) {
+                    iron.setHidden(false);
+                }
+                useInfo.setUsed(true);
+                return useInfo.getMessage();
+            }
+            return "There is nothing to pick open here.";
         }
 
         return "Invalid use target.";

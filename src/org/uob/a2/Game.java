@@ -104,7 +104,7 @@ public class Game {
         sb.append(room.getDescription()).append("\nYou see:");
 
         for (GameObject obj : room.getVisibleObjects()) {
-            sb.append("\n").append(obj.getName());
+            sb.append("\n").append(obj.getDescription());
         }
 
         return sb.toString();
