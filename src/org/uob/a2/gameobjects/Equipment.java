@@ -16,6 +16,10 @@ public class Equipment extends GameObject implements Usable {
         return useInformation;
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
     public String use(GameObject target, GameState gameState) {
         if (!(target instanceof Container)) {
             return "This equipment cannot be used on the target.";

@@ -14,6 +14,10 @@ public class Feature extends GameObject {
         super(id, name, description, hidden);
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
      /**
      * Returns a string representation of the feature by calling the superclass {@code GameObject}'s
      * {@code toString} method.

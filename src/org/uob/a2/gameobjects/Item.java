@@ -18,6 +18,10 @@ public class Item extends GameObject {
         super(id, name, description, hidden);
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
     @Override
     public String toString() {
         return super.toString();
