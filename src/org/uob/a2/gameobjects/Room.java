@@ -97,11 +97,33 @@ public class Room extends GameObject {
         return null;
     }
 
-    /**
-     * Retrieves all visible objects in the room, including items, equipment, features, and exits.
-     * 
-     * @return a list of visible objects in the room
-     */
+    // New methods to fix the errors in the tests
+    public boolean hasItem(String itemName) {
+        return getItemByName(itemName) != null;
+    }
+
+    public boolean hasEquipment(String equipmentName) {
+        return getEquipmentByName(equipmentName) != null;
+    }
+
+    public Item getItem(String id) {
+        for (Item item : items) {
+            if (item.getId().equalsIgnoreCase(id)) {
+                return item;
+            }
+        }
+        return null; // Item not found
+    }
+
+    public Feature getFeature(String id) {
+        for (Feature feature : features) {
+            if (feature.getId().equalsIgnoreCase(id)) {
+                return feature;
+            }
+        }
+        return null; // Feature not found
+    }
+
     public ArrayList<GameObject> getVisibleObjects() {
         ArrayList<GameObject> visibleObjects = new ArrayList<>();
 
@@ -136,10 +158,26 @@ public class Room extends GameObject {
         output.append("Description: ").append(description).append("\n");
         output.append("In the room you see:\n");
 
-        for (GameObject obj : getVisibleObjects()) {
-            output.append("- ").append(obj.getDescription()).append("\n");
+        for (Item item : items) {
+            if (!item.isHidden()) {
+                output.append("- ").append(item.getDescription()).append("\n");
+            }
         }
-
+        for (Equipment eq : equipment) {
+            if (!eq.isHidden()) {
+                output.append("- ").append(eq.getDescription()).append("\n");
+            }
+        }
+        for (Feature feature : features) {
+            if (!feature.isHidden()) {
+                output.append("- ").append(feature.getDescription()).append("\n");
+            }
+        }
+        for (Exit exit : exits) {
+            if (!exit.isHidden()) {
+                output.append("- ").append(exit.getDescription()).append("\n");
+            }
+        }
         return output.toString();
     }
 }
