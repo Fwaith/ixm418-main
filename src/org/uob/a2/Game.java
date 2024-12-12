@@ -59,7 +59,6 @@ public class Game {
                 System.out.print(">> ");
 
                 String input = scanner.nextLine().trim();
-                System.out.println(input); // Echo the user input
 
                 // Tokenise and parse input
                 tokeniser.tokenise(input);

@@ -88,14 +88,14 @@ public class Room extends GameObject {
         return null;
     }
 
-    public Exit getExit(String id) {
+    public Exit getExit(String name) {
         for (Exit exit : exits) {
-            if (exit.getId().equalsIgnoreCase(id)) {
+            if (exit.getName().equalsIgnoreCase(name)) {
                 return exit;
             }
         }
-        return null;
-    }
+        return null; // No matching exit found
+    }    
 
     // New methods to fix the errors in the tests
     public boolean hasItem(String itemName) {

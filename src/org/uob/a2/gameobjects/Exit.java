@@ -42,7 +42,7 @@ public class Exit extends GameObject {
     public boolean isHidden() {
         return hidden;
     }
-
+    
     /**
      * Returns a string representation of the exit, including its attributes and next room information.
      *
