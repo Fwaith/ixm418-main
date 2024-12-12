@@ -45,6 +45,11 @@ public enum TokenType {
     QUIT,
 
     /**
+     * Represents the "combine" command.
+     */
+    COMBINE, // Added support for the "combine" command.
+
+    /**
      * Represents an error token, typically for invalid input.
      */
     ERROR,

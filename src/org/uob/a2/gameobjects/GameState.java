@@ -12,10 +12,12 @@ public class GameState {
 
     Map map;        
     Player player;
+    int score;
     
     public GameState(Map map, Player player) {
         this.map = map;
         this.player = player;
+        this.score = 0;
     }
     //Constructs a new GameState with the specified map and player.
     //Parameters: map - the map representing the game world player - the player in the game
@@ -37,6 +39,21 @@ public class GameState {
     }
     //Retrieves the player associated with the current game state.
     //Returns: the player in the game
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore(int points) {
+        score += points;
+    }
+
+    public void decrementScore(int points) {
+        score -= points;
+        if (score < 0) {
+            score = 0; // Prevent negative scores
+        }
+    }
     
     /**
      * Returns a string representation of the game state, including the map and player details.

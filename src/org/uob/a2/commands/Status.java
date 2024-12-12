@@ -19,16 +19,11 @@ public class Status extends Command {
         this.commandType = CommandType.STATUS;
         this.value = topic;
     }
-    //Creates a new Status command for the specified topic.
-    //Parameters: topic - the topic to retrieve the status for, such as "inventory", "player", or an item name
-    
+
     @Override
     public String toString() {
         return "Status command: status " + value;
     }
-    //Returns a string representation of the status command, including its type and topic.
-    //Overrides: toString in class Object
-    //Returns: a string describing the status command
 
     @Override
     public String execute(GameState gameState) {
@@ -43,29 +38,25 @@ public class Status extends Command {
                 result.append("- ").append(equipment.getName()).append("\n");
             }
             return result.toString();
-        } else if (value != null && !value.isEmpty()) {
-            // Special case: topic is "player"
-            if ("player".equalsIgnoreCase(value)) {
-                // Return full player status (which includes the string "Player")
-                return player.toString();
-            }
-
-            // Check for specific item or equipment
-            Item item = player.getItem(value);
-            Equipment equipment = player.getEquipment(value);
-            if (item != null) {
-                return item.getDescription();
-            }
-            if (equipment != null) {
-                return equipment.getDescription();
-            }
-
-            // Invalid specific topic: return an empty string
-            return "";
-        } else {
-            // No topic means show full player status
+        } else if ("map".equalsIgnoreCase(value)) {
+            return gameState.getMap().renderMap(player);
+        } else if ("score".equalsIgnoreCase(value)) {
+            return "Your score is: " + player.getScore();
+        } else if ("player".equalsIgnoreCase(value)) {
             return player.toString();
         }
+
+        Item item = player.getItem(value);
+        Equipment equipment = player.getEquipment(value);
+
+        if (item != null) {
+            return item.getDescription();
+        }
+        if (equipment != null) {
+            return equipment.getDescription();
+        }
+
+        return "No such topic or object in your inventory.";
     }
 
     //Executes the status command. Retrieves and displays information based on the specified topic.

@@ -42,6 +42,7 @@ public class Get extends Command {
             }
             player.addItem(item);
             currentRoom.getItems().remove(item);
+            gameState.incrementScore(5);
             return "You pick up: " + value;
         }
 
@@ -53,6 +54,7 @@ public class Get extends Command {
             }
             player.addEquipment(equipment);
             currentRoom.getEquipments().remove(equipment);
+            gameState.incrementScore(5);
             return "You pick up: " + value;
         }
 

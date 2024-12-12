@@ -69,16 +69,23 @@ public class Parser {
                 }
                 throw new CommandErrorException("USE command requires 'use [item] on [target]'.");
             }
+            case COMBINE -> {
+                if (tokens.size() > 3
+                        && tokens.get(1).getTokenType() == TokenType.VAR
+                        && tokens.get(2).getTokenType() == TokenType.PREPOSITION
+                        && tokens.get(3).getTokenType() == TokenType.VAR) {
+                    return new Combine(tokens.get(1).getValue(), tokens.get(3).getValue());
+                }
+                throw new CommandErrorException("COMBINE command requires 'combine [item1] and [item2]'.");
+            }
             case QUIT -> {
                 return new Quit();
             }
             default -> throw new CommandErrorException("Invalid command.");
         }
     }
-
-    //Parses a list of tokens into a Command object.
-    //Parameters: tokens - the list of tokens to parse
-    //Returns: a Command object representing the parsed command
-    //Throws: CommandErrorException - if the command cannot be parsed or is invalid
-
+    // Parses a list of tokens into a Command object.
+    // Parameters: tokens - the list of tokens to parse
+    // Returns: a Command object representing the parsed command
+    // Throws: CommandErrorException - if the command cannot be parsed or is invalid
 }

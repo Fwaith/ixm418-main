@@ -56,6 +56,33 @@ public class Map {
             currentRoom = null;
         }
     }
+
+    public String renderMap(Player player) {
+        StringBuilder mapBuilder = new StringBuilder();
+        String[][] dungeonLayout = {
+            {" ","x","x"," "," "},
+            {" "," ","x"," "," "},
+            {"x","x","x","x","x"},
+            {" ","x"," "," "," "}
+        };
+
+        String currentRoomId = currentRoom.getId();
+
+        for (String[] row : dungeonLayout) {
+            for (String cell : row) {
+                if (cell.equals(currentRoomId)) {
+                    mapBuilder.append(" o "); // Mark the current room
+                } else if (!cell.equals("   ")) {
+                    mapBuilder.append("[").append(cell).append("]");
+                } else {
+                    mapBuilder.append("   "); // Empty space
+                }
+            }
+            mapBuilder.append("\n");
+        }
+
+        return mapBuilder.toString();
+    }
     //Sets the current room based on the provided room ID.
     //Parameters: roomId - the ID of the room to set as the current room
 
