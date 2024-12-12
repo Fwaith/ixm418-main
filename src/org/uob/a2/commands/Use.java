@@ -36,16 +36,17 @@ public class Use extends Command {
             return "You do not have " + value + ".";
         }
 
-        UseInformation useInfo = equipment.getUseInformation();
-        if (useInfo.isUsed()) {
-            return "You have already used " + value + ".";
-        }
-
         Room currentRoom = gameState.getMap().getCurrentRoom();
 
         // Using a key to open the box
         if (value.equalsIgnoreCase("key") && target.equalsIgnoreCase("box")) {
-            return "You use the key to open the box. The box explodes and kills you. Game over.";
+            Container box = (Container) currentRoom.getFeatureByName("box");
+            if (box != null && !box.isHidden()) {
+                player.getEquipment().remove(equipment); // Remove the key from the player's inventory
+                box.setHidden(true); // Hide the box
+                return "You use the key to open the box. The box explodes and kills you. Game over.";
+            }
+            return "There is no box to open here.";
         }
 
         // Using a pickaxe to reveal a new path
@@ -53,8 +54,7 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e3");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
-                useInfo.setUsed(true);
-                return useInfo.getMessage();
+                return "You mine away at the wall, revealing a new path!";
             }
             return "There is nothing to mine here.";
         }
@@ -64,8 +64,7 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e9");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
-                useInfo.setUsed(true);
-                return useInfo.getMessage();
+                return "You use the TNT. It blows up the boulder, revealing a new path!";
             }
             return "There is nothing to blow up here.";
         }
@@ -75,25 +74,24 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e18");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
-                useInfo.setUsed(true);
-                return useInfo.getMessage() + " You win!";
+                return "You use the pearl to activate the portal. You escape and win the game!";
             }
             return "There is no portal here.";
         }
 
-        // NEW: Using a pick to open the chest and reveal the iron
+        // Using a pick to open the chest and reveal the iron
         if (value.equalsIgnoreCase("pick") && target.equalsIgnoreCase("chest")) {
             Container chest = (Container) currentRoom.getFeatureByName("chest");
-            if (chest != null && chest.isHidden()) {
-                chest.setHidden(false);
+            if (chest != null && !chest.isHidden()) {
+                chest.setHidden(true); // Hide the chest after opening
                 Item iron = currentRoom.getItemByName("iron");
                 if (iron != null) {
-                    iron.setHidden(false);
+                    iron.setHidden(false); // Reveal the iron
+                    return "You pick open the chest. The iron is now visible!";
                 }
-                useInfo.setUsed(true);
-                return useInfo.getMessage();
+                return "The chest is empty.";
             }
-            return "There is nothing to pick open here.";
+            return "There is no chest to open here.";
         }
 
         return "Invalid use target.";
