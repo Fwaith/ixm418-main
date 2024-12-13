@@ -98,6 +98,10 @@ public class Player {
     public void addEquipment(Equipment equipment) {
         this.equipment.add(equipment);
     }
+
+    public void removeEquipment(Equipment eq) {
+        this.equipment.remove(eq);
+    }
     // Adds a piece of equipment to the player's collection.
     // Parameters: equipment - the Equipment to add
 

@@ -4,9 +4,13 @@ import java.lang.reflect.Constructor;
 
 import org.uob.a2.gameobjects.*;
 
-
 /**
  * Represents the use command, allowing the player to use equipment on a specific target in the game.
+ * 
+ * <p>
+ * The use command checks if the player has the specified equipment and whether it can interact with
+ * the target. The target can be a feature, item, or the current room, depending on the game context.
+ * </p>
  */
 public class Use extends Command {
 
@@ -34,33 +38,69 @@ public class Use extends Command {
 
         Room currentRoom = gameState.getMap().getCurrentRoom();
 
-        // Debugging: Check the current room contents
-        System.out.println("Debug: Current room: " + currentRoom.getName());
-        System.out.println("Debug: Equipment: " + equipment.getName());
-
-        // Using pickaxe on wall
+       // Using the pickaxe on the wall
         if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
-            // Retrieve wall container and exit
             Container wall = (Container) currentRoom.getFeatureByName("wall");
             Exit hiddenExit = currentRoom.getExit("e3");
 
-            // Debugging: Verify the wall and exit
-            System.out.println("Debug: Wall found: " + (wall != null));
-            System.out.println("Debug: Wall hidden: " + (wall != null && wall.isHidden()));
-            System.out.println("Debug: Exit e3 found: " + (hiddenExit != null));
-            System.out.println("Debug: Exit e3 hidden: " + (hiddenExit != null && hiddenExit.isHidden()));
-
-            // Check if wall exists and exit is hidden
-            if (wall != null && !wall.isHidden() && hiddenExit != null && hiddenExit.isHidden()) {
+            if (wall != null && hiddenExit != null) {
                 wall.setHidden(true); // Hide the wall
-                hiddenExit.setHidden(false); // Reveal the exit
-                player.removeEquipment(equipment); // Remove the pickaxe
-                return "You mine away at the wall, revealing a new path!";
+                hiddenExit.setHidden(false); // Reveal the hidden exit
+                player.getEquipment().remove(equipment); // Remove the pickaxe from the player's inventory
+                return "You mine away at the wall with the pickaxe, revealing a new path!";
             }
-            return "There is nothing to mine here.";
+
+            return "There is no wall to mine here.";
         }
 
-        // Other use cases (key, pick, TNT, etc.)
+        // Using a key to open the box
+        if (value.equalsIgnoreCase("key") && target.equalsIgnoreCase("box")) {
+            Container box = (Container) currentRoom.getFeatureByName("box");
+            if (box != null && !box.isHidden()) {
+                player.getEquipment().remove(equipment); // Remove the key from the player's inventory
+                box.setHidden(true); // Hide the box
+                return "You use the key to open the box. The box explodes and kills you. Game over.";
+            }
+            return "There is no box to open here.";
+        }
+
+        // Using TNT to blow up a boulder
+        if (value.equalsIgnoreCase("tnt") && target.equalsIgnoreCase("boulder")) {
+            Exit hiddenExit = currentRoom.getExit("e9");
+            if (hiddenExit != null && hiddenExit.isHidden()) {
+                hiddenExit.setHidden(false);
+                player.removeEquipment(equipment); // Remove the TNT from the player's inventory
+                return "You use the TNT. It blows up the boulder, revealing a new path!";
+            }
+            return "There is nothing to blow up here.";
+        }
+
+        // Using a pearl to escape and win the game
+        if (value.equalsIgnoreCase("pearl") && target.equalsIgnoreCase("portal")) {
+            Exit hiddenExit = currentRoom.getExit("e18");
+            if (hiddenExit != null && hiddenExit.isHidden()) {
+                hiddenExit.setHidden(false);
+                player.removeEquipment(equipment); // Remove the pearl from the player's inventory
+                return "You use the pearl to activate the portal. You escape and win the game!";
+            }
+            return "There is no portal here.";
+        }
+
+        // Using a pick to open the chest and reveal the iron
+        if (value.equalsIgnoreCase("pick") && target.equalsIgnoreCase("chest")) {
+            Container chest = (Container) currentRoom.getFeatureByName("chest");
+            if (chest != null && !chest.isHidden()) {
+                chest.setHidden(true); // Hide the chest after opening
+                Item iron = currentRoom.getItemByName("iron");
+                if (iron != null) {
+                    iron.setHidden(false); // Reveal the iron
+                    player.removeEquipment(equipment); // Remove the pick from the player's inventory
+                    return "You pick open the chest. The iron is now visible!";
+                }
+                return "The chest is empty.";
+            }
+            return "There is no chest to open here.";
+        }
 
         return "Invalid use target.";
     }
