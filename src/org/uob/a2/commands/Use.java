@@ -62,7 +62,6 @@ public class Use extends Command {
                 player.getEquipment().remove(equipment); // Remove the key from the player's inventory
                 box.setHidden(true); // Hide the box
                 currentRoom.setId("r11"); // Set the room ID to r11
-                player.updateScore(25); // Add 25 points for using equipment
                 return "You use the key to open the box. The box explodes and kills you. Game over.";
             }
             return "There is no box to open here.";
@@ -87,14 +86,9 @@ public class Use extends Command {
 
         // Using a pearl to escape and win the game
         if (value.equalsIgnoreCase("pearl") && target.equalsIgnoreCase("portal")) {
-            Exit hiddenExit = currentRoom.getExit("e18");
-            if (hiddenExit != null && hiddenExit.isHidden()) {
-                hiddenExit.setHidden(false);
-                player.getEquipment().remove(equipment); // Remove the pearl from the player's inventory
-                currentRoom.setId("r11"); // Set the room ID to r11
-                return "You use the pearl to activate the portal. You escape and win the game!";
-            }
-            return "There is no portal here.";
+            player.getEquipment().remove(equipment); // Remove the pearl from the player's inventory
+            currentRoom.setId("r11"); // Set the room ID to r11
+            return "You use the pearl to activate the portal. You escape and win the game!";
         }
 
         // Using a pick to open the chest and reveal the iron
