@@ -6,11 +6,11 @@ map:r1
         exit:e1,north,A path heading north,r2,false
     room:r2,Wide Cave,A large space. On one of the sides you see a cracked wall,false
         equipment:k2,pickaxe,A trusty pickaxe,true,reveal,r2,c4,You mine away at the wall revealing a new path
-        container:c2,chest,An oak chest,false
         container:c4,wall,A cracked wall,false
+        exit:e3,east,A path heading east,r4,true        
+        container:c2,chest,An oak chest,false
         item:i1,iron,A few iron ingots,true
         exit:e2,west,A path heading west,r3,false
-        exit:e3,east,A path heading east,r4,true
         exit:e4,south,A path heading south,r1,false
     room:r3,Small Cavern,This is a tight space with nothing much here,false
         equipment:k5,pick,A lock pick,false,open,r2,c2,You pick open the chest
@@ -21,7 +21,8 @@ map:r1
         exit:e6,north,A path heading north,r5,false
         exit:e7,west,A path heading west,r2,false
     room:r5,Grand Room,A massive room. A huge boulder is blocking the way forward,false
-        equipment:k3,tnt,Thingy that goes boom,true,use,r5,e9,You use the TNT. It blows up the boulder.
+        equipment:k3,tnt,Thingy that goes boom,true,use,r5,c3,You use the TNT. It blows up the boulder.
+        container:c3,boulder,A huge boulder,false
         exit:e8,east,A path heading east,r6,false
         exit:e9,north,A path heading north,r8,true
         exit:e10,south,A path heading south,r4,false
@@ -30,7 +31,6 @@ map:r1
         exit:e12,west,A path heading west,r5,false
     room:r7,Pit,A small pit,false
         item:i4,sand,A box filled with sand,false
-        container:c3,hidden crate,A crate filled with supplies,false
         exit:e13,west,A path heading west,r6,false
     room:r8,Tunnel,A dark tunnel. There's only space to move backwards and forwards,false
         exit:e14,north,A path heading north,r9,false

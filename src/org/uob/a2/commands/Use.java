@@ -38,19 +38,22 @@ public class Use extends Command {
 
         Room currentRoom = gameState.getMap().getCurrentRoom();
 
-       // Using the pickaxe on the wall
+        // Using the pickaxe on the wall
         if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
             Container wall = (Container) currentRoom.getFeatureByName("wall");
-            Exit hiddenExit = currentRoom.getExit("e3");
+            Exit hiddenExit = currentRoom.getExit("east");
 
-            if (wall != null && hiddenExit != null) {
+            if (wall != null) {
                 wall.setHidden(true); // Hide the wall
-                hiddenExit.setHidden(false); // Reveal the hidden exit
+                if (hiddenExit != null) {
+                    hiddenExit.setHidden(false); // Reveal the hidden exit
+                } else {
+                    return "Error: The exit (e3) could not be found.";
+                }
                 player.getEquipment().remove(equipment); // Remove the pickaxe from the player's inventory
                 return "You mine away at the wall with the pickaxe, revealing a new path!";
             }
-
-            return "There is no wall to mine here.";
+            return "The wall is already mined or does not exist.";
         }
 
         // Using a key to open the box
@@ -64,15 +67,22 @@ public class Use extends Command {
             return "There is no box to open here.";
         }
 
-        // Using TNT to blow up a boulder
+        // Using TNT to blow up the boulder
         if (value.equalsIgnoreCase("tnt") && target.equalsIgnoreCase("boulder")) {
-            Exit hiddenExit = currentRoom.getExit("e9");
-            if (hiddenExit != null && hiddenExit.isHidden()) {
-                hiddenExit.setHidden(false);
-                player.removeEquipment(equipment); // Remove the TNT from the player's inventory
-                return "You use the TNT. It blows up the boulder, revealing a new path!";
+            Container boulder = (Container) currentRoom.getFeatureByName("boulder");
+            Exit hiddenExit = currentRoom.getExit("north");
+
+            if (boulder != null) {
+                boulder.setHidden(true); // Hide the boulder
+                if (hiddenExit != null) {
+                    hiddenExit.setHidden(false); // Reveal the hidden exit
+                } else {
+                    return "Error: The exit could not be found.";
+                }
+                player.getEquipment().remove(equipment); // Remove the TNT from the player's inventory
+                return "You blow up the boulder, revealing a new path!";
             }
-            return "There is nothing to blow up here.";
+            return "The boulder does not exist.";
         }
 
         // Using a pearl to escape and win the game
