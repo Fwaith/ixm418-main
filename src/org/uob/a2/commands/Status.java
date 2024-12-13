@@ -1,17 +1,11 @@
 package org.uob.a2.commands;
 
 import java.lang.reflect.Constructor;
-
 import org.uob.a2.gameobjects.*;
 
 /**
  * Represents the status command, allowing the player to retrieve information
  * about their inventory, specific items, or their overall status.
- * 
- * <p>
- * The status command can display a list of items in the player's inventory, 
- * provide details about a specific item, or show the player's general status.
- * </p>
  */
 public class Status extends Command {
 
@@ -50,21 +44,12 @@ public class Status extends Command {
         Equipment equipment = player.getEquipment(value);
 
         if (item != null) {
-            return item.getName();
+            return item.getDescription(); // Ensure description is returned
         }
         if (equipment != null) {
-            return equipment.getName();
+            return equipment.getDescription(); // Ensure description is returned
         }
 
         return "No such topic or object in your inventory.";
     }
-
-    //Executes the status command. Retrieves and displays information based on the specified topic.
-    //If the topic is "inventory", it lists all items in the player's inventory.
-    //If the topic matches an item name, it displays the item's description.
-    //If the topic is "player", it displays the player's general status.
-    //Specified by: execute in class Command
-    //Parameters:gameState - the current state of the game
-    //Returns: a string describing the requested status information
-
 }

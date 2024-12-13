@@ -38,6 +38,10 @@ public class Use extends Command {
 
         Room currentRoom = gameState.getMap().getCurrentRoom();
 
+        if (equipment.getUseInformation().isUsed()) {
+            return value + " has already been used.";
+        }
+
         // Using the pickaxe on the wall
         if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
             Container wall = (Container) currentRoom.getFeatureByName("wall");

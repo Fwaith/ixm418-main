@@ -1,19 +1,12 @@
 package org.uob.a2.commands;
 
 import java.lang.reflect.Constructor;
-
 import org.uob.a2.gameobjects.*;
-
 import java.util.Map;
 
 /**
  * Represents the help command, providing the player with instructions or information
  * about various topics related to the game.
- * 
- * <p>
- * The help command displays information on how to play the game, including details about 
- * available commands, their syntax, and their purpose.
- * </p>
  */
 public class Help extends Command {
 
@@ -43,7 +36,6 @@ public class Help extends Command {
     public String execute(GameState gameState) {
         if (value == null || value.isEmpty()) {
             return """
-                Welcome to the dungeon!
                 Available commands:
                 - MOVE: Navigate to another room.
                 - LOOK: Examine your surroundings or specific objects.
@@ -58,9 +50,4 @@ public class Help extends Command {
         }
         return HELP_TOPICS.getOrDefault(value.toLowerCase(), "No help available for the topic: " + value);
     }
-    //Executes the help command. Provides detailed help information based on the specified topic or general game help if no specific topic is provided.
-    //Specified by: execute in class Command
-    //Parameters: gameState - the current state of the game (not used for help commands)
-    //Returns: a string containing help information for the player
-
 }
