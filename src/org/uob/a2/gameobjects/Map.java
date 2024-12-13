@@ -58,7 +58,6 @@ public class Map {
     }
 
     public String renderMap(Player player) {
-        StringBuilder mapBuilder = new StringBuilder();
         String[][] dungeonLayout = {
             {" ", "r10", "r9", " ", " "},
             {" ", " ", "r8", " ", " "},
@@ -66,25 +65,27 @@ public class Map {
             {"r3", "r2", "r4", " ", " "},
             {" ", "r1", " ", " ", " "}
         };
-
-        Room maproom = new Room();
-        String currentRoomId = maproom.getId();
     
-        for (int i = 0; i < dungeonLayout.length; i++) {
-            for (int j = 0; j < dungeonLayout[i].length; j++) {
-                if (dungeonLayout[i][j].equals(currentRoomId)) {
-                    mapBuilder.append("[o]");
-                } else if (dungeonLayout[i][j].startsWith("r")) {
-                    mapBuilder.append("[x]");
+        StringBuilder mapBuilder = new StringBuilder();
+        String currentRoomId = currentRoom.getId(); // Get the current room ID
+    
+        for (String[] row : dungeonLayout) {
+            for (String cell : row) {
+                if (cell.equals(currentRoomId)) {
+                    mapBuilder.append("o"); // Mark the player's position
+                } else if (!cell.equals(" ")) {
+                    mapBuilder.append("x"); // Mark other rooms
                 } else {
-                    mapBuilder.append("[ ]");
+                    mapBuilder.append(" "); // Keep empty spaces
                 }
+                mapBuilder.append(" ");
             }
-            mapBuilder.append("\n");
+            mapBuilder.append("\n"); // Move to the next line for the grid
         }
     
-        return mapBuilder.toString();
+        return mapBuilder.toString().trim();
     }
+    
     
     //Sets the current room based on the provided room ID.
     //Parameters: roomId - the ID of the room to set as the current room

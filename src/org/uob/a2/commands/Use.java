@@ -41,7 +41,7 @@ public class Use extends Command {
         // Using the pickaxe on the wall
         if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
             Container wall = (Container) currentRoom.getFeatureByName("wall");
-            Exit hiddenExit = currentRoom.getExit("e3");
+            Exit hiddenExit = currentRoom.getExit("east");
 
             if (wall != null) {
                 wall.setHidden(true); // Hide the wall
@@ -61,6 +61,7 @@ public class Use extends Command {
             if (box != null && !box.isHidden()) {
                 player.getEquipment().remove(equipment); // Remove the key from the player's inventory
                 box.setHidden(true); // Hide the box
+                currentRoom.setId("r11"); // Set the room ID to r11
                 player.updateScore(25); // Add 25 points for using equipment
                 return "You use the key to open the box. The box explodes and kills you. Game over.";
             }
@@ -106,7 +107,7 @@ public class Use extends Command {
                     iron.setHidden(false); // Reveal the iron
                     player.removeEquipment(equipment); // Remove the pick from the player's inventory
                     player.updateScore(25); // Add 25 points for using equipment
-                    return "You pick open the chest. The iron is now visible!";
+                    return "You pick open the chest.";
                 }
                 return "The chest is empty.";
             }

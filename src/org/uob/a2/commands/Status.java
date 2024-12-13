@@ -50,10 +50,10 @@ public class Status extends Command {
         Equipment equipment = player.getEquipment(value);
 
         if (item != null) {
-            return item.getDescription();
+            return item.getName();
         }
         if (equipment != null) {
-            return equipment.getDescription();
+            return equipment.getName();
         }
 
         return "No such topic or object in your inventory.";
