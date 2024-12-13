@@ -50,10 +50,11 @@ public class Use extends Command {
         }
 
         // Using a pickaxe to reveal a new path
-        if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
+        if (value.equalsIgnoreCase("pickaxe")) {
             Exit hiddenExit = currentRoom.getExit("e3");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
+                player.getEquipment().remove(equipment); // Remove the pickaxe from the player's inventory
                 return "You mine away at the wall, revealing a new path!";
             }
             return "There is nothing to mine here.";
@@ -64,6 +65,7 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e9");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
+                player.getEquipment().remove(equipment); // Remove the TNT from the player's inventory
                 return "You use the TNT. It blows up the boulder, revealing a new path!";
             }
             return "There is nothing to blow up here.";
@@ -74,6 +76,7 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e18");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
+                player.getEquipment().remove(equipment); // Remove the pearl from the player's inventory
                 return "You use the pearl to activate the portal. You escape and win the game!";
             }
             return "There is no portal here.";
@@ -87,6 +90,7 @@ public class Use extends Command {
                 Item iron = currentRoom.getItemByName("iron");
                 if (iron != null) {
                     iron.setHidden(false); // Reveal the iron
+                    player.getEquipment().remove(equipment); // Remove the pick from the player's inventory
                     return "You pick open the chest. The iron is now visible!";
                 }
                 return "The chest is empty.";
