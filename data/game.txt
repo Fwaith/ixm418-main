@@ -39,5 +39,8 @@ map:r1
         exit:e16,west,A path heading west,r10,false
         exit:e17,south,A path heading south,r8,false
     room:r10,The End,There is nowhere to go beyond this,false
-        equipment:k4,pearl,A shiny pearl,false,use,r10,e18,You use the pearl and escape.
+        container:c0,portal,A deactivated portal,false
+        equipment:k4,pearl,A shiny pearl,false,use,c0,e18,You use the pearl and escape.
+        exit:e19,west,A path heading east,r11,true
         exit:e18,east,A path heading east,r9,false
+    room:r11,win,end,false

@@ -41,16 +41,15 @@ public class Use extends Command {
         // Using the pickaxe on the wall
         if (value.equalsIgnoreCase("pickaxe") && target.equalsIgnoreCase("wall")) {
             Container wall = (Container) currentRoom.getFeatureByName("wall");
-            Exit hiddenExit = currentRoom.getExit("east");
+            Exit hiddenExit = currentRoom.getExit("e3");
 
             if (wall != null) {
                 wall.setHidden(true); // Hide the wall
                 if (hiddenExit != null) {
                     hiddenExit.setHidden(false); // Reveal the hidden exit
-                } else {
-                    return "Error: The exit (e3) could not be found.";
                 }
                 player.getEquipment().remove(equipment); // Remove the pickaxe from the player's inventory
+                player.updateScore(25); // Add 25 points for using equipment
                 return "You mine away at the wall with the pickaxe, revealing a new path!";
             }
             return "The wall is already mined or does not exist.";
@@ -62,6 +61,7 @@ public class Use extends Command {
             if (box != null && !box.isHidden()) {
                 player.getEquipment().remove(equipment); // Remove the key from the player's inventory
                 box.setHidden(true); // Hide the box
+                player.updateScore(25); // Add 25 points for using equipment
                 return "You use the key to open the box. The box explodes and kills you. Game over.";
             }
             return "There is no box to open here.";
@@ -76,10 +76,9 @@ public class Use extends Command {
                 boulder.setHidden(true); // Hide the boulder
                 if (hiddenExit != null) {
                     hiddenExit.setHidden(false); // Reveal the hidden exit
-                } else {
-                    return "Error: The exit could not be found.";
                 }
                 player.getEquipment().remove(equipment); // Remove the TNT from the player's inventory
+                player.updateScore(25); // Add 25 points for using equipment
                 return "You blow up the boulder, revealing a new path!";
             }
             return "The boulder does not exist.";
@@ -90,7 +89,8 @@ public class Use extends Command {
             Exit hiddenExit = currentRoom.getExit("e18");
             if (hiddenExit != null && hiddenExit.isHidden()) {
                 hiddenExit.setHidden(false);
-                player.removeEquipment(equipment); // Remove the pearl from the player's inventory
+                player.getEquipment().remove(equipment); // Remove the pearl from the player's inventory
+                currentRoom.setId("r11"); // Set the room ID to r11
                 return "You use the pearl to activate the portal. You escape and win the game!";
             }
             return "There is no portal here.";
@@ -105,6 +105,7 @@ public class Use extends Command {
                 if (iron != null) {
                     iron.setHidden(false); // Reveal the iron
                     player.removeEquipment(equipment); // Remove the pick from the player's inventory
+                    player.updateScore(25); // Add 25 points for using equipment
                     return "You pick open the chest. The iron is now visible!";
                 }
                 return "The chest is empty.";

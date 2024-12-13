@@ -45,6 +45,10 @@ public class Room extends GameObject {
         return exits;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void addItem(Item item) {
         items.add(item);
     }

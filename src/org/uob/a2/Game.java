@@ -7,9 +7,6 @@ import org.uob.a2.gameobjects.*;
 import org.uob.a2.parser.*;
 import org.uob.a2.utils.*;
 
-/**
- * Main class for the game application. Handles game setup, input parsing, and game execution.
- */
 public class Game {
 
     private static GameState gameState;
@@ -22,21 +19,13 @@ public class Game {
         start();
     }
 
-    /**
-     * Sets up the game by initializing the game state, scanner, parser, and tokeniser.
-     */
     public static void setup() {
         try {
             System.out.println("Loading game...");
-
-            // Load the game state from a file
             gameState = GameStateFileParser.parse("data/game.txt");
-
-            // Initialize input handling components
             scanner = new Scanner(System.in);
             parser = new Parser();
             tokeniser = new Tokeniser();
-
             System.out.println("Game loaded successfully.");
         } catch (Exception e) {
             System.err.println("Failed to load game state: " + e.getMessage());
@@ -44,35 +33,40 @@ public class Game {
         }
     }
 
-    /**
-     * Starts the game loop. Continuously reads input, tokenises it, and processes commands until the user decides to quit.
-     */
     public static void start() {
         boolean running = true;
-
-        // Show the initial room description
         System.out.println(formatRoomDescription(gameState.getMap().getCurrentRoom()));
-
         while (running) {
             try {
-                // Prompt for input
+                // Check the game-ending condition
+                Room currentRoom = gameState.getMap().getCurrentRoom();
+                if (currentRoom.getId().equals("r11")) {
+                    int score = gameState.getPlayer().getScore();
+                    if (score > 20) {
+                        System.out.println("Congratulations! You have successfully completed the game with a score of " + score + "!");
+                        running = false;
+                    } else {
+                        System.out.println("You died... Game Over");
+                        running = false;
+                    }
+                    continue;
+                }
+
                 System.out.print(">> ");
-
                 String input = scanner.nextLine().trim();
-
-                // Tokenise and parse input
                 tokeniser.tokenise(input);
                 var tokens = tokeniser.getTokens();
-
                 Command command = parser.parse(tokens);
-
-                // Execute the command
                 if (command instanceof Quit) {
                     running = false;
                     System.out.println("Goodbye...");
                 } else {
                     turn(command);
                 }
+
+                // Decrease score by 1 each turn
+                gameState.getPlayer().updateScore(-1);
+
             } catch (CommandErrorException e) {
                 System.out.println("Error: " + e.getMessage());
             } catch (Exception e) {
@@ -81,11 +75,6 @@ public class Game {
         }
     }
 
-    /**
-     * Processes a single game turn based on the provided command.
-     *
-     * @param command the command to execute during the turn
-     */
     public static void turn(Command command) {
         String result = command.execute(gameState);
         if (result != null && !result.isEmpty()) {
@@ -93,20 +82,12 @@ public class Game {
         }
     }
 
-    /**
-     * Formats the room description to match the desired output format.
-     *
-     * @param room the current room
-     * @return the formatted room description
-     */
     private static String formatRoomDescription(Room room) {
         StringBuilder sb = new StringBuilder();
         sb.append(room.getDescription()).append("\nYou see:");
-
         for (GameObject obj : room.getVisibleObjects()) {
             sb.append("\n").append(obj.getDescription());
         }
-
         return sb.toString();
     }
 }
