@@ -5,8 +5,9 @@ map:r1
         container:c1,box,A dusty box,false
         exit:e1,north,A path heading north,r2,false
     room:r2,Wide Cave,A large space. On one of the sides you see a cracked wall,false
-        equipment:k2,pickaxe,A trusty pickaxe,true,reveal,r2,e3,You mine away at the wall revealing a new path
+        equipment:k2,pickaxe,A trusty pickaxe,true,reveal,r2,c4,You mine away at the wall revealing a new path
         container:c2,chest,An oak chest,false
+        container:c4,wall,A cracked wall,false
         item:i1,iron,A few iron ingots,true
         exit:e2,west,A path heading west,r3,false
         exit:e3,east,A path heading east,r4,true
